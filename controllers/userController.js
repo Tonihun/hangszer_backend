@@ -12,9 +12,10 @@ const cookieOptions = {
 }
 //ads
 async function register(req, res) {
+    //console.log(req);
     try {
         const { username, email, psw,  phoneNumber, postalCode, city, street_housenumber } = req.body
-        //console.log(username, psw, email);
+        console.log(username, email, psw,  phoneNumber, postalCode, city, street_housenumber);
         if (!username || !email ||  !psw || !phoneNumber || !postalCode || !city || !street_housenumber) {
             return res.status(400).json({ error: "Minden mezőt tölts ki!" })
         }
