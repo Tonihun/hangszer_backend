@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt")
 const { config } = require('../config/dotenvConfig')
 const jwt = require('jsonwebtoken')
-const { findByEmail, createUser } = require('../models/userModel')
+const { findByEmail, createUser, findByPostalCode } = require('../models/userModel')
 
 const cookieOptions = {
     httpOn: true,
@@ -13,9 +13,9 @@ const cookieOptions = {
 
 async function register(req, res) {
     try {
-        const { username, psw, email, phoneNumber, address, postalCode } = req.body
+        const { username, email, psw,  phoneNumber, postalCode, city, street_housenumber } = req.body
         //console.log(username, psw, email);
-        if (!username || !psw || !email || !phoneNumber || !address || !postalCode) {
+        if (!username || !email ||  !psw || !phoneNumber || !postalCode || !city || !street_housenumber) {
             return res.status(400).json({ error: "Minden mezőt tölts ki!" })
         }
 
@@ -26,6 +26,10 @@ async function register(req, res) {
         if (isNaN(postalCode)) {
             return res.status(400).json({error: "Hibás irányítószám"})
         }
+        if (postalCode.length < 4 ||postalCode.length > 4) {
+            return res.status(400).json({error: "Az irányítószám 4 számból kell hogy álljon"})
+        }
+
 
         const alreadyExists = await findByEmail(email)
         if (alreadyExists) {
@@ -33,7 +37,7 @@ async function register(req, res) {
         }
         const hash = await bcrypt.hash(psw, 15)
 
-        const { insertId } = await createUser(username, email, hash, phoneNumber, address, postalCode)
+        const { insertId } = await createUser(username, email, hash, phoneNumber, postalCode, city, street_housenumber)
 
         return res.status(201).json({ message: "Sikeres Regisztráció", insertId })
 
@@ -67,7 +71,7 @@ async function login(req, res) {
 
         const token = jwt.sign({
             id: userSQL.user_id, username: userSQL.username, email: userSQL.email,
-            phoneNumber: userSQL.phoneNumber, address: userSQL.address, postalCode: userSQL.postalCode, role: userSQL.role
+            phoneNumber: userSQL.phoneNumber, city: userSQL.city, street_housenumber: userSQL.street_housenumber, postalCode: userSQL.Postal_Code, role: userSQL.role
         },
             config.JWT_SECRET,
             { expiresIn: config.JWT_EXPIRES_IN }
@@ -85,14 +89,35 @@ async function login(req, res) {
 
 }
 
-async function logout(res) {
+async function logout(req, res) {
     return res.clearCookie(config.COOKIE_NAME, {path: '/'}).status(200).json({message:'kijelentkezve'})
 }
 
-async function postal(req,res) {
-    const {postal} = req.body
+async function getCityByPostalCode(req, res) {
+    try {
+        const { postalCode } = req.params
 
+        if (!postalCode || isNaN(postalCode)) {
+            return res.status(400).json({ error: "Hibás irányítószám" })
+        }
 
+        const city = await findByPostalCode(postalCode)
+
+        if (!city) {
+            return res.status(404).json({ error: "Nincs ilyen irányítószám" })
+        }
+
+        return res.status(200).json({
+            postalCode,
+            city: city.City
+        })
+
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ error: "Szerver hiba" })
+    }
 }
 
-module.exports = { register, login, logout, postal }
+
+
+module.exports = { register, login, logout, getCityByPostalCode }
