@@ -5,8 +5,8 @@ const {auth} = require('../middleware/userMiddleware')
 
 const router= express.Router()
 
-router.post('/register', register)
-router.post('/login', login)
+router.post('/regisztracio', register)
+router.post('/bejelentkezes', login)
 
 router.get('/logout', logout)
 
