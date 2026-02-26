@@ -12,14 +12,14 @@ const cookieOptions = {
 }
 //ads
 async function register(req, res) {
-    //console.log(req);
+
     try {
         const { username, email, psw,  phoneNumber, postalCode, city, street_housenumber } = req.body
         console.log(username, email, psw,  phoneNumber, postalCode, city, street_housenumber);
         if (!username || !email ||  !psw || !phoneNumber || !postalCode || !city || !street_housenumber) {
             return res.status(400).json({ error: "Minden mezőt tölts ki!" })
         }
-
+        
         if ( isNaN(phoneNumber)) {
             return res.status(400).json({error: "Hibás telefonszám"})
         }
@@ -118,7 +118,4 @@ async function getCityByPostalCode(req, res) {
         return res.status(500).json({ error: "Szerver hiba" })
     }
 }
-
-
-
 module.exports = { register, login, logout, getCityByPostalCode }
