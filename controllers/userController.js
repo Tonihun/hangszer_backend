@@ -10,7 +10,7 @@ const cookieOptions = {
     path: '/',
     maxAge: 1000 * 60 * 60 * 24 * 7
 }
-
+//ads
 async function register(req, res) {
     try {
         const { username, email, psw,  phoneNumber, postalCode, city, street_housenumber } = req.body
