@@ -1,5 +1,5 @@
 const express = require("express")
-const { register, login, logout, postal } = require("../controllers/userController")
+const { register, login, logout, getCityByPostalCode } = require("../controllers/userController")
 const {auth} = require('../middleware/userMiddleware')
 
 
@@ -10,7 +10,7 @@ router.post('/login', login)
 
 router.get('/logout', logout)
 
-router.post('/postal', postal)
+router.get('/postal/:postalCode', getCityByPostalCode)
 
 
 module.exports=router
