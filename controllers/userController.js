@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt")
 const { config } = require('../config/dotenvConfig')
 const jwt = require('jsonwebtoken')
-const { findByEmail, createUser, findByPostalCode } = require('../models/userModel')
+const { findByEmail, createUser, findByPostalCode, createAdmin } = require('../models/userModel')
 
 const cookieOptions = {
     httpOn: true,
@@ -46,6 +46,32 @@ async function register(req, res) {
     } catch (err) {
         console.log(err);
         return res.status(500).json({ error: "Hiba a regisztrációban", err })
+    }
+
+}
+
+async function adminRegister(req, res) {
+
+    try {
+        const { username, email, psw } = req.body
+        console.log(username, email, psw);
+        if (!username || !email ||  !psw ) {
+            return res.status(400).json({ error: "Minden mezőt tölts ki!" })
+        }
+        const alreadyExists = await findByEmail(email)
+        if (alreadyExists) {
+            return res.status(409).json({ error: 'Ezzel az emaillel már regisztráltak' })
+        }
+        const hash = await bcrypt.hash(psw, 15)
+
+        const { insertId } = await createAdmin(username, email, hash)
+
+        return res.status(201).json({ message: "Sikeres admin regisztráció", insertId })
+
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Hiba az admin regisztrációban", err })
     }
 
 }
@@ -118,4 +144,4 @@ async function getCityByPostalCode(req, res) {
         return res.status(500).json({ error: "Szerver hiba" })
     }
 }
-module.exports = { register, login, logout, getCityByPostalCode }
+module.exports = { register, adminRegister, login, logout, getCityByPostalCode }
