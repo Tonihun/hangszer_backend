@@ -14,31 +14,20 @@ const cookieOptions = {
 async function register(req, res) {
 
     try {
-        const { username, email, psw,  phoneNumber, postalCode, city, street_housenumber } = req.body
-        console.log(username, email, psw,  phoneNumber, postalCode, city, street_housenumber);
-        if (!username || !email ||  !psw || !phoneNumber || !postalCode || !city || !street_housenumber) {
+        const { username, email, psw} = req.body
+        console.log(username, email, psw);
+        if (!username || !email ||  !psw) {
             return res.status(400).json({ error: "Minden mezőt tölts ki!" })
         }
         
-        if ( isNaN(phoneNumber)) {
-            return res.status(400).json({error: "Hibás telefonszám"})
-        }
-
-        if (isNaN(postalCode)) {
-            return res.status(400).json({error: "Hibás irányítószám"})
-        }
-        if (postalCode.length < 4 ||postalCode.length > 4) {
-            return res.status(400).json({error: "Az irányítószám 4 számból kell hogy álljon"})
-        }
-
-
+      
         const alreadyExists = await findByEmail(email)
         if (alreadyExists) {
             return res.status(409).json({ error: 'Ezzel az emaillel már regisztráltak' })
         }
         const hash = await bcrypt.hash(psw, 15)
 
-        const { insertId } = await createUser(username, email, hash, phoneNumber, postalCode, city, street_housenumber)
+        const { insertId } = await createUser(username, email, hash)
 
         return res.status(201).json({ message: "Sikeres Regisztráció", insertId })
 
@@ -98,7 +87,7 @@ async function login(req, res) {
 
         const token = jwt.sign({
             id: userSQL.user_id, username: userSQL.username, email: userSQL.email,
-            phoneNumber: userSQL.phoneNumber, city: userSQL.city, street_housenumber: userSQL.street_housenumber, postalCode: userSQL.Postal_Code, role: userSQL.role
+             psw: userSQL.psw, role: userSQL.role
         },
             config.JWT_SECRET,
             { expiresIn: config.JWT_EXPIRES_IN }
@@ -141,7 +130,7 @@ async function getCityByPostalCode(req, res) {
 
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ error: "Szerver hiba" })
+        return res.status(500).json({ error: "Hibás irányítószám" })
     }
 }
 module.exports = { register, adminRegister, login, logout, getCityByPostalCode }
