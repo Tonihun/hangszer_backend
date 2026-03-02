@@ -48,7 +48,7 @@ async function addOrderItems(req, res) {
     try {
         const { orderId, productId, quantity, price } = req.body
 
-        if (!quantity || !price || orderId || productId) {
+        if (!quantity || !price || !orderId || !productId) {
             return res.status(400).json({ error: "Minden mezőt tölts ki" })
         }
 
