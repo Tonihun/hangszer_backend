@@ -4,6 +4,8 @@ const cors = require('cors')
 const userRoutes = require('./routes/userRoutes')
 const orderRoutes = require('./routes/orderRouters')
 const categoryRoutes = require('./routes/categoryRoutes')
+const productRoutes = require('./routes/productRoutes')
+
 
 
 
@@ -20,6 +22,8 @@ app.use(cors({
 app.use('/users/', userRoutes)
 app.use('/orders/', orderRoutes)
 app.use('/categories/', categoryRoutes)
+app.use('/products/', productRoutes)
+
 
 
 

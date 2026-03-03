@@ -11,7 +11,7 @@ async function findByEmail(email) {
 //Fiók létrehozása
 async function createUser(username, email, hash ) {
 
-    const sql = 'INSERT INTO `users`(`User_Id`, `Username`, `Email`, `PSW`, `User_Role`) VALUES (NULL, ?, ?, ?, "user")'
+    const sql = 'INSERT INTO `users`(`User_Id`, `Username`, `Email`, `PSW`, `User_Role`) VALUES (NULL, ?, ?, ?, "User")'
     const [result] = await db.query(sql, [username, email, hash])
  
     return { insertId: result.insertId }
@@ -20,7 +20,7 @@ async function createUser(username, email, hash ) {
 //admin fiók létrehozása
 async function createAdmin(username, email, hash ) {
 
-    const sql = 'INSERT INTO `users`(`User_Id`, `Username`, `Email`, `PSW`, `User_Role`) VALUES (NULL, ?, ?, ?, "admin")'
+    const sql = 'INSERT INTO `users`(`User_Id`, `Username`, `Email`, `PSW`, `User_Role`) VALUES (NULL, ?, ?, ?, "Admin")'
     const [result] = await db.query(sql, [username, email, hash ])
  
     return { insertId: result.insertId }

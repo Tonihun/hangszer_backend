@@ -10,7 +10,7 @@ const cookieOptions = {
     path: '/',
     maxAge: 1000 * 60 * 60 * 24 * 7
 }
-//ads
+
 async function register(req, res) {
 
     try {
@@ -28,6 +28,7 @@ async function register(req, res) {
         const hash = await bcrypt.hash(psw, 15)
 
         const { insertId } = await createUser(username, email, hash)
+        
 
         return res.status(201).json({ message: "Sikeres Regisztráció", insertId })
 
@@ -68,19 +69,17 @@ async function adminRegister(req, res) {
 async function login(req, res) {
     try {
         const { email, psw } = req.body
-      // console.log(email, psw);
         if (!email || !psw) {
             return res.status(400).json({ error: "Tölts ki minden mezőt" })
         }
 
         const userSQL = await findByEmail(email)
-        //console.log(userSQL);
         if (!userSQL) {
             return res.status(401).json({ error: 'Hibás email' })
         }
-
+        console.log("Beírt jelszó:", psw);
+console.log("DB jelszó:", userSQL.PSW);
         const ok = await bcrypt.compare(psw, userSQL.PSW)
-        console.log(ok);
         if (!ok) {
             return res.status(401).json({ error: 'hibás jelszó' })
         }
@@ -100,7 +99,7 @@ async function login(req, res) {
     } catch (err) {
 
         console.log(err);
-        return res.status(500).json({ error: 'Bejelentkezési hiba' })
+        return res.status(500).json({ error: 'Bejelentkezési hiba', err })
     }
 
 }

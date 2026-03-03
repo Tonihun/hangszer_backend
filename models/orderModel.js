@@ -13,7 +13,7 @@ async function createOrder(User_Id, Order_Status,  PhoneNumber,Postal_Code, City
 
 async function createOrderItems(orderId, productId, quantity, price) {
  
-    const sql = 'INSERT INTO `order_items`(`Item_Id`, `Order_Id`, `Product_Id`, `Quantity`, `Price`) VALUES (NULL, ?, ?, ?, ?)'
+    const sql = 'INSERT INTO `order_items`(`Item_Id`, `Order_Id`, `Product_Id`, `Quantity`, `OrderPrice`) VALUES (NULL, ?, ?, ?, ?)'
     const [result] = await db.query(sql, [orderId, productId, quantity, price])
 
 
