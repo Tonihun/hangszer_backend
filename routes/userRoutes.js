@@ -1,5 +1,5 @@
 const express = require("express")
-const { register, login, logout,whoAmI ,getCityByPostalCode, adminRegister } = require("../controllers/userController")
+const { register, login, logout, whoAmI ,getCityByPostalCode, adminRegister } = require("../controllers/userController")
 const {auth} = require('../middleware/userMiddleware')
 
 
