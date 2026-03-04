@@ -104,16 +104,34 @@ console.log("DB jelszó:", userSQL.PSW);
 
 }
 
+async function whoAmI(req, res) {
+    const {id, username, email, role } = req.user
+    try {
+
+return res.status(200).json({id: id, username:username, email:email, role:role})
+
+    } catch (err) {
+        return res.status(500).json({error: 'whoAmI szerver oldali hiba', err})
+    }
+    
+}
+
 async function logout(req, res) {
     return res.clearCookie(config.COOKIE_NAME, {path: '/'}).status(200).json({message:'kijelentkezve'})
 }
+
+
 
 async function getCityByPostalCode(req, res) {
     try {
         const { postalCode } = req.params
 
-        if (!postalCode || isNaN(postalCode)) {
+        if (!postalCode) {
             return res.status(400).json({ error: "Hibás irányítószám" })
+        }
+
+        if (isNaN(postalCode)) {
+            return res.status(400).json({error: "Irányítószámhoz számot adj meg!"})
         }
 
         const city = await findByPostalCode(postalCode)
@@ -132,4 +150,4 @@ async function getCityByPostalCode(req, res) {
         return res.status(500).json({ error: "Hibás irányítószám" })
     }
 }
-module.exports = { register, adminRegister, login, logout, getCityByPostalCode }
+module.exports = { register, adminRegister, login, whoAmI, logout, getCityByPostalCode }

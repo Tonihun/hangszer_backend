@@ -1,5 +1,5 @@
 const express = require("express")
-const { register, login, logout, getCityByPostalCode, adminRegister } = require("../controllers/userController")
+const { register, login, logout,whoAmI ,getCityByPostalCode, adminRegister } = require("../controllers/userController")
 const {auth} = require('../middleware/userMiddleware')
 
 
@@ -9,8 +9,10 @@ router.post('/register', register)
 router.post('/adminRegisztracio', adminRegister)
 
 router.post('/bejelentkezes', login)
+router.get("/whoami", auth, whoAmI)
 
-router.get('/logout', logout)
+
+router.get('/logout', auth, logout)
 
 router.get('/postal/:postalCode', getCityByPostalCode)
 
