@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const { findByEmail, createUser, findByPostalCode, createAdmin } = require('../models/userModel')
 
 const cookieOptions = {
-    httpOn: true,
+    httpOnly: true,
     secure: false,
     sameSite: 'lax',
     path: '/',

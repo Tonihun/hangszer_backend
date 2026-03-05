@@ -19,7 +19,7 @@ app.use(cookieParser())
 
 app.use(cors({
     origin: 'http://localhost:5173',
-    credentials: 'include'
+    credentials: true
 }))
 
 app.use('/users/', userRoutes)
