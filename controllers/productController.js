@@ -9,8 +9,7 @@ async function addProduct(req, res) {
 
 
 
-console.log("SubcategoryId:", Subcategory_Id);
-console.log("TÍPUS:", typeof Subcategory_Id);
+
       if (!Product_Name || !ProductDescription) {
          return res.status(400).json({ error: "Minden mezőt tölts ki!" })
       }

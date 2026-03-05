@@ -106,7 +106,7 @@ async function whoAmI(req, res) {
     const { User_Id, Username, Email, User_Role } = req.user
     try {
 
-        return res.status(200).json({ User_Id: User_Id, Username: Username, Email: Email, User_Role: User_Role })
+        return res.status(200).json({ User_Id: User_Id, username: userSQL.username, Email: Email, User_Role: User_Role })
 
     } catch (err) {
         return res.status(500).json({ error: 'whoAmI szerver oldali hiba', err })
