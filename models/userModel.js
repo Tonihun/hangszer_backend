@@ -17,6 +17,15 @@ async function createUser(username, email, hash ) {
     return { insertId: result.insertId }
 }
 
+//Fiók törlése
+// async function deleteUser(User_Id) {
+
+//     const sql = 'DELETE FROM users WHERE `users`.`User_Id` = ?'
+//     const [result] = await db.query(sql, [User_Id])
+ 
+//     return { insertId: result.insertId }
+// }
+
 //admin fiók létrehozása
 async function createAdmin(username, email, hash ) {
 
@@ -36,4 +45,4 @@ async function findByPostalCode(postalCode) {
 
 
 
-module.exports = { findByEmail, createUser, createAdmin ,findByPostalCode }
+module.exports = { findByEmail, createUser,  createAdmin ,findByPostalCode }
