@@ -3,6 +3,11 @@ const cors = require('cors')
 
 const userRoutes = require('./routes/userRoutes')
 const orderRoutes = require('./routes/orderRouters')
+const categoryRoutes = require('./routes/categoryRoutes')
+const productRoutes = require('./routes/productRoutes')
+const cartRouters = require('./routes/cartRoutes')
+
+
 
 
 
@@ -16,8 +21,18 @@ app.use(cors({
     credentials: true
 }))
 
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}))
+
 app.use('/users/', userRoutes)
 app.use('/orders/', orderRoutes)
+app.use('/categories/', categoryRoutes)
+app.use('/products/', productRoutes)
+app.use('/cart/', cartRouters)
+
+
 
 
 

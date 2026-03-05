@@ -9,18 +9,27 @@ async function findByEmail(email) {
 
 }
 //Fiók létrehozása
-async function createUser(username, email,  hash, phoneNumber, Postal_Code, city, street_housenumber ) {
+async function createUser(username, email, hash ) {
 
-    const sql = 'INSERT INTO `users`(`User_Id`, `Username`, `Email`, `PSW`, `Phone_Number`, `Postal_Code`, `City`, `Street_Housenumber`, `User_Role`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, "user")'
-    const [result] = await db.query(sql, [username, email, hash,  phoneNumber, Postal_Code, city, street_housenumber ])
+    const sql = 'INSERT INTO `users`(`User_Id`, `Username`, `Email`, `PSW`, `User_Role`) VALUES (NULL, ?, ?, ?, "User")'
+    const [result] = await db.query(sql, [username, email, hash])
  
     return { insertId: result.insertId }
 }
 
+//Fiók törlése
+// async function deleteUser(User_Id) {
+
+//     const sql = 'DELETE FROM users WHERE `users`.`User_Id` = ?'
+//     const [result] = await db.query(sql, [User_Id])
+ 
+//     return { insertId: result.insertId }
+// }
+
 //admin fiók létrehozása
 async function createAdmin(username, email, hash ) {
 
-    const sql = 'INSERT INTO `users`(`User_Id`, `Username`, `Email`, `PSW`, `User_Role`) VALUES (NULL, ?, ?, ?, "admin")'
+    const sql = 'INSERT INTO `users`(`User_Id`, `Username`, `Email`, `PSW`, `User_Role`) VALUES (NULL, ?, ?, ?, "Admin")'
     const [result] = await db.query(sql, [username, email, hash ])
  
     return { insertId: result.insertId }
@@ -36,4 +45,4 @@ async function findByPostalCode(postalCode) {
 
 
 
-module.exports = { findByEmail, createUser, createAdmin ,findByPostalCode }
+module.exports = { findByEmail, createUser,  createAdmin ,findByPostalCode }
